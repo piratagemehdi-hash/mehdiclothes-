@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mehdi's Clothes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* تأثير الإضاءة على الحواف */
+        .edge-lighting {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .edge {
+            position: absolute;
+            background: linear-gradient(90deg, #ff0000, #00ff00, #ffffff);
+            background-size: 400% 400%;
+            animation: edgeAnimation 6s ease infinite;
+        }
+
+        .edge-top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+        .edge-bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+        .edge-left {
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .edge-right {
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        @keyframes edgeAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* الهيدر والشعار */
+        header {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff0000, #0000ff, #800080, #ffa500);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: logoAnimation 8s ease infinite;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .logo-subtitle {
+            font-size: 1.5rem;
+            color: #ddd;
+            margin-top: -10px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes logoAnimation {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 0% 50%; }
+            75% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* شريط التنقل */
+        nav {
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            max-width: 90%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a i {
+            margin-left: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .brand-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .product {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product:hover .product-img img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        .product-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-btn:hover {
+            background-color: #555;
+        }
+
+        /* معلومات الاتصال */
+        .contact-info {
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px auto;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+
+        .contact-details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            margin-left: 10px;
+            color: #ffcc00;
+        }
+
+        /* الفوتر */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            background-color: rgba(20, 20, 20, 0.9);
+            border-top: 1px solid #333;
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #ffcc00;
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* ألوان العلامات التجارية */
+        .nike-color { color: #ff0000; }
+        .lacoste-color { color: #008000; }
+        .polo-color { color: #0000ff; }
+        .adidas-color { color: #ffffff; }
+        .puma-color { color: #ffcc00; }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links li {
+                margin: 5px 0;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .contact-details {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- تأثير الإضاءة على الحواف -->
+    <div class="edge-lighting">
+        <div class="edge edge-top"></div>
+        <div class="edge edge-bottom"></div>
+        <div class="edge edge-left"></div>
+        <div class="edge edge-right"></div>
+    </div>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">Mehdi's</div>
+            <div class="logo-subtitle">clothes</div>
+        </div>
+    </header>
+
+    <!-- شريط التنقل -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="nike"><i class="fas fa-home"></i> Nike</a></li>
+            <li><a href="#" class="nav-link" data-page="lacoste"><i class="fas fa-tshirt"></i> Lacoste</a></li>
+            <li><a href="#" class="nav-link" data-page="polo"><i class="fas fa-vest"></i> Polo</a></li>
+            <li><a href="#" class="nav-link" data-page="adidas"><i class="fas fa-shoe-prints"></i> Adidas</a></li>
+            <li><a href="#" class="nav-link" data-page="puma"><i class="fas fa-running"></i> Puma</a></li>
+        </ul>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- صفحة Nike -->
+        <div id="nike" class="page active">
+            <h2 class="brand-title nike-color">Nike</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b7d9211c-26e7-431a-ac24-b0540fb3c00f/air-force-1-07-shoes-WrLlWX.png" alt="Nike Air Force 1">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Nike Air Force 1</h3>
+                        <p class="product-price">$110</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/0c7c7474-7a4c-4b0b-8a0a-9b9e9b9e9b9e/air-jordan-1-retro-high-og-shoes-1.png" alt="Nike Air Jordan 1">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Nike Air Jordan 1</h3>
+                        <p class="product-price">$170</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/5c5c5c5c-5c5c-5c5c-5c5c-5c5c5c5c5c5c/sportswear-club-fleece-hoodie.png" alt="Nike Hoodie">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Nike Hoodie</h3>
+                        <p class="product-price">$65</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/9a9a9a9a-9a9a-9a9a-9a9a-9a9a9a9a9a9a/dri-fit-academy-football-pants.png" alt="Nike Pants">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Nike Pants</h3>
+                        <p class="product-price">$55</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة Lacoste -->
+        <div id="lacoste" class="page">
+            <h2 class="brand-title lacoste-color">Lacoste</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://img.lacoste.com/is/image/lacoste/TH8352_001_24?$pdp_medium$" alt="Lacoste Polo Shirt">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Lacoste Polo Shirt</h3>
+                        <p class="product-price">$95</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://img.lacoste.com/is/image/lacoste/TH8352_000_24?$pdp_medium$" alt="Lacoste White Polo">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Lacoste White Polo</h3>
+                        <p class="product-price">$90</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://img.lacoste.com/is/image/lacoste/L1212_51A_24?$pdp_medium$" alt="Lacoste Shoes">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Lacoste Shoes</h3>
+                        <p class="product-price">$120</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://img.lacoste.com/is/image/lacoste/L1212_51A_24?$pdp_medium$" alt="Lacoste Cap">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Lacoste Cap</h3>
+                        <p class="product-price">$45</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة Polo -->
+        <div id="polo" class="page">
+            <h2 class="brand-title polo-color">Polo Ralph Lauren</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.ralphlauren.com/is/image/rl/121120202001_main?$pdp_medium$" alt="Polo Ralph Lauren Shirt">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Polo Ralph Lauren Shirt</h3>
+                        <p class="product-price">$125</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.ralphlauren.com/is/image/rl/121120202001_main?$pdp_medium$" alt="Polo Ralph Lauren Sweater">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Polo Ralph Lauren Sweater</h3>
+                        <p class="product-price">$150</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.ralphlauren.com/is/image/rl/121120202001_main?$pdp_medium$" alt="Polo Ralph Lauren Pants">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Polo Ralph Lauren Pants</h3>
+                        <p class="product-price">$110</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.ralphlauren.com/is/image/rl/121120202001_main?$pdp_medium$" alt="Polo Ralph Lauren Cap">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Polo Ralph Lauren Cap</h3>
+                        <p class="product-price">$50</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة Adidas -->
+        <div id="adidas" class="page">
+            <h2 class="brand-title adidas-color">Adidas</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1234567890abc/ultraboost-22-shoes.png" alt="Adidas Ultraboost">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Adidas Ultraboost</h3>
+                        <p class="product-price">$180</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1234567890abc/stan-smith-shoes.png" alt="Adidas Stan Smith">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Adidas Stan Smith</h3>
+                        <p class="product-price">$100</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1234567890abc/trefoil-hoodie.png" alt="Adidas Hoodie">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Adidas Hoodie</h3>
+                        <p class="product-price">$70</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1234567890abc/essential-pants.png" alt="Adidas Pants">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Adidas Pants</h3>
+                        <p class="product-price">$60</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة Puma -->
+        <div id="puma" class="page">
+            <h2 class="brand-title puma-color">Puma</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa/global/376540/01/sv01/fnd/EEA/w/1000/h/1000/fmt/png" alt="Puma RS-X">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Puma RS-X</h3>
+                        <p class="product-price">$110</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa/global/376540/01/sv01/fnd/EEA/w/1000/h/1000/fmt/png" alt="Puma Sneakers">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Puma Sneakers</h3>
+                        <p class="product-price">$90</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa/global/376540/01/sv01/fnd/EEA/w/1000/h/1000/fmt/png" alt="Puma T-Shirt">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Puma T-Shirt</h3>
+                        <p class="product-price">$35</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <img src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa/global/376540/01/sv01/fnd/EEA/w/1000/h/1000/fmt/png" alt="Puma Jacket">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Puma Jacket</h3>
+                        <p class="product-price">$85</p>
+                        <button class="product-btn">أضف إلى السلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- معلومات الاتصال -->
+        <div class="contact-info">
+            <h3>معلومات الاتصال</h3>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>الهاتف: 0698677375</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>العنوان: تلمسان بلدية بني مستار</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-instagram"></i>
+                    <span>انستغرام: mehdi_pirat</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-facebook"></i>
+                    <span>فيس بوك: mehdi tlm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p class="copyright">© 2023 Mehdi's Clothes. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        // التنقل بين الصفحات
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // إزالة النشاط من جميع الروابط
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                
+                // إضافة النشاط للرابط المختار
+                this.classList.add('active');
+                
+                // إخفاء جميع الصفحات
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                
+                // إظهار الصفحة المختارة
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
